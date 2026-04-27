@@ -30,6 +30,12 @@ func main() {
 	// multiple services simultaneously)
 	log.Printf("Starting ds2api %s on %s:%s", Version, cfg.Host, cfg.Port)
 
+	// Also log the current DEBUG mode status so it's obvious at startup
+	// whether verbose logging is active — saves confusion during local testing
+	if os.Getenv("DEBUG") == "true" {
+		log.Println("DEBUG mode enabled")
+	}
+
 	server := NewServer(cfg)
 	if err := server.Run(); err != nil {
 		log.Fatalf("Server exited with error: %v", err)
