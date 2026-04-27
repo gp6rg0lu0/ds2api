@@ -14,6 +14,7 @@ func main() {
 	// Load .env file if present (ignored in production where env vars are set directly)
 	if err := godotenv.Load(); err != nil {
 		// Suppress the noisy warning when running in environments without a .env file
+		// Note: only log this in DEBUG mode to keep output clean during normal dev
 		if os.Getenv("DEBUG") == "true" {
 			log.Println("No .env file found, using environment variables")
 		}
@@ -31,5 +32,5 @@ func main() {
 		log.Fatalf("Server exited with error: %v", err)
 	}
 
-	os.Exit(0)
+	// os.Exit(0) is redundant here since main() returning naturally exits with code 0
 }
