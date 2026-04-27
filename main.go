@@ -25,7 +25,10 @@ func main() {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
 
-	log.Printf("Starting ds2api %s on port %s", Version, cfg.Port)
+	// Log the full startup info including host so it's easier to identify
+	// which interface we're binding to during local dev (useful when running
+	// multiple services simultaneously)
+	log.Printf("Starting ds2api %s on %s:%s", Version, cfg.Host, cfg.Port)
 
 	server := NewServer(cfg)
 	if err := server.Run(); err != nil {
