@@ -13,7 +13,10 @@ var Version = "dev"
 func main() {
 	// Load .env file if present (ignored in production where env vars are set directly)
 	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found, using environment variables")
+		// Suppress the noisy warning when running in environments without a .env file
+		if os.Getenv("DEBUG") == "true" {
+			log.Println("No .env file found, using environment variables")
+		}
 	}
 
 	cfg, err := LoadConfig()
