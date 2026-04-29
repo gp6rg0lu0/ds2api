@@ -42,4 +42,5 @@ func main() {
 	}
 
 	// os.Exit(0) is redundant here since main() returning naturally exits with code 0
+	// TODO: look into graceful shutdown via signal handling (SIGINT/SIGTERM) for cleaner Ctrl+C behaviour
 }
