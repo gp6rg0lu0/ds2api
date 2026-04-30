@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/joho/godotenv"
 )
@@ -36,12 +38,20 @@ func main() {
 		log.Println("DEBUG mode enabled")
 	}
 
+	// Basic signal handling for graceful shutdown on Ctrl+C / SIGTERM
+	// Addresses the TODO above — at least we log a clean exit message now
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-quit
+		log.Println("Shutdown signal received, exiting...")
+		os.Exit(0)
+	}()
+
 	server := NewServer(cfg)
 	if err := server.Run(); err != nil {
 		log.Fatalf("Server exited with error: %v", err)
 	}
 
-	// os.Exit(0) is redundant here since main() returning naturally exits with code 0
-	// TODO: look into graceful shutdown via signal handling (SIGINT/SIGTERM) for cleaner Ctrl+C behaviour
 	// TODO: consider adding a /healthz endpoint for use with Docker HEALTHCHECK
 }
