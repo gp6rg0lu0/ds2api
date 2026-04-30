@@ -54,4 +54,6 @@ func main() {
 	}
 
 	// TODO: consider adding a /healthz endpoint for use with Docker HEALTHCHECK
+	// TODO: add request logging middleware to track response times — would help
+	// with debugging slow upstream calls during local testing
 }
